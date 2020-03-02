@@ -1,18 +1,15 @@
 (ns othello.core
   (:require
-    [reagent.core :as r]))
+    [reagent.core :as r]
+    [othello.game.core :as gc]
+    [othello.view.components :as vc]))
 
-;; -------------------------
-;; Views
+(defonce state-atom (r/atom (gc/create-game)))
 
-(defn home-page []
-  [:div [:h2 "Welcome to Reagent"]])
-
-;; -------------------------
-;; Initialize app
+; Handle events here?
 
 (defn mount-root []
-  (r/render [home-page] (.getElementById js/document "app")))
+  (r/render [vc/app-view state-atom] (.getElementById js/document "app")))
 
 (defn init! []
   (mount-root))
