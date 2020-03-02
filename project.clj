@@ -28,7 +28,7 @@
                                        :source-map    true
                                        :optimizations :none
                                        :pretty-print  true}
-                        :figwheel     {:on-jsload "othello.core/mount-root"
+                        :figwheel     {:on-jsload "othello.main/mount-root"
                                        :open-urls ["http://localhost:3449/index.html"]}}
                        :release
                        {:source-paths ["src" "env/prod/cljs"]

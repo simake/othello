@@ -5,4 +5,5 @@
     [othello.game.core :refer []]))
 
 (defn play
-  [state x y])
+  [state x y]
+  (println "play"))

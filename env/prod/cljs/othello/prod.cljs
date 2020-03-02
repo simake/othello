@@ -1,6 +1,6 @@
 (ns othello.prod
   (:require
-    [othello.core :as core]))
+    [othello.main :as core]))
 
 ;;ignore println statements in prod
 (set! *print-fn* (fn [& _]))
