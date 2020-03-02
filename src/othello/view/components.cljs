@@ -14,28 +14,38 @@
                                              :y y}})}])
 
 (defn row-view
-  [{values        :values
+  [{y             :y
+    values        :values
     trigger-event :trigger-event}]
-  (reduce
-    (fn [div value]
-      (conj div (square-view {:x             "?"            ;TODO
-                              :y             "?"
-                              :value         value
-                              :trigger-event trigger-event})))
-    [:div.row]
-    values))
+  (->> (map-indexed
+         (fn [idx value]
+           (square-view {:x             idx
+                         :y             y
+                         :value         value
+                         :trigger-event trigger-event}))
+         values)
+       (reduce
+         (fn [div square]
+           (conj div square))
+         [:div.row])))
 
 (defn board-view
   [{state         :state
     trigger-event :trigger-event}]
   (let [width (gc/get-board-width state)
-        squares (gc/get-squares state)]
-    (reduce
-      (fn [div row-values]
-        (conj div (row-view {:values        row-values
-                             :trigger-event trigger-event})))
-      [:div.board]
-      (partition width squares))))
+        height (gc/get-board-height state)
+        squares (gc/get-squares state)
+        rows (partition width squares)]
+    (->> (map-indexed
+           (fn [idx row-values]
+             (row-view {:y             (- height idx 1)
+                        :values        row-values
+                        :trigger-event trigger-event}))
+           rows)
+         (reduce
+           (fn [div square]
+             (conj div square))
+           [:div.board]))))
 
 (defn othello-view
   [{state         :state
