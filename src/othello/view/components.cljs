@@ -57,6 +57,7 @@
   [{app-state-atom :app-state-atom
     trigger-event  :trigger-event}]
   (let [state @app-state-atom]
-    [:h2 "Welcome to Reagent"]
-    [othello-view {:state         state
-                   :trigger-event trigger-event}]))
+    [:div
+     [:h2 "Welcome to Reagent"]
+     [othello-view {:state         state
+                    :trigger-event trigger-event}]]))

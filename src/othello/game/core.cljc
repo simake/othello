@@ -43,28 +43,35 @@
   [state]
   (:squares (get-board state)))
 
+(defn get-player-in-turn
+  [state]
+  (:player-in-turn state))
+
 (defn coordinates-to-vector-index
-  "Converts coordinates in the xy-plane to a vector index."
+  "Converts coordinates in the xy-plane to a vector index.
+  Returns nil for out-of-bounds indices."
   {:test (fn []
            (is= (coordinates-to-vector-index 2 2 0 0) 2)
            (is= (coordinates-to-vector-index 3 3 1 1) 4)
-           (is= (coordinates-to-vector-index 3 1 2 0) 2))}
+           (is= (coordinates-to-vector-index 3 1 2 0) 2)
+           (is= (coordinates-to-vector-index 4 4 4 4) nil))}
   [board-width board-height x y]
-  (when-not (and (< x board-width) (< y board-height))
-    (error "Coordinates out of bounds."))
-  (+ (* (- board-height y 1) board-width) x))
+  (if (and (< x board-width)
+           (< y board-height))
+    (+ (* (- board-height y 1) board-width) x)
+    nil))
 
 (defn get-square
   [state x y]
   (let [board (get-board state)
         index (coordinates-to-vector-index (:width board) (:height board) x y)]
-    (nth (:squares board) index)))
+    (get (:squares board) index)))
 
 (defn set-square
   [state x y value]
   (let [board (get-board state)
         index (coordinates-to-vector-index (:width board) (:height board) x y)]
-    (update-in state [:board :squares] #(assoc % index value))))
+    (assoc-in state [:board :squares index] value)))
 
 (defn set-starting-pieces
   "Sets the four middle squares to alternating black/white."
@@ -84,31 +91,31 @@
            (is= (create-game 4 4)
                 {:player-in-turn w
                  :board          {:width   4
-                               :height  4
-                               :squares [0 0 0 0
-                                         0 w b 0
-                                         0 b w 0
-                                         0 0 0 0]}})
+                                  :height  4
+                                  :squares [0 0 0 0
+                                            0 w b 0
+                                            0 b w 0
+                                            0 0 0 0]}})
            (is= (create-game 6 4)
                 {:player-in-turn w
                  :board          {:width   6
-                               :height  4
-                               :squares [0 0 0 0 0 0
-                                         0 0 w b 0 0
-                                         0 0 b w 0 0
-                                         0 0 0 0 0 0]}})
+                                  :height  4
+                                  :squares [0 0 0 0 0 0
+                                            0 0 w b 0 0
+                                            0 0 b w 0 0
+                                            0 0 0 0 0 0]}})
            (is= (create-game)
                 {:player-in-turn w
                  :board          {:width   8
-                               :height  8
-                               :squares [0 0 0 0 0 0 0 0
-                                         0 0 0 0 0 0 0 0
-                                         0 0 0 0 0 0 0 0
-                                         0 0 0 w b 0 0 0
-                                         0 0 0 b w 0 0 0
-                                         0 0 0 0 0 0 0 0
-                                         0 0 0 0 0 0 0 0
-                                         0 0 0 0 0 0 0 0]}}))}
+                                  :height  8
+                                  :squares [0 0 0 0 0 0 0 0
+                                            0 0 0 0 0 0 0 0
+                                            0 0 0 0 0 0 0 0
+                                            0 0 0 w b 0 0 0
+                                            0 0 0 b w 0 0 0
+                                            0 0 0 0 0 0 0 0
+                                            0 0 0 0 0 0 0 0
+                                            0 0 0 0 0 0 0 0]}}))}
   ([board-width board-height]
    (-> (create-empty-state board-width board-height)
        (set-starting-pieces)))

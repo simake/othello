@@ -1,6 +1,6 @@
 (ns ^:figwheel-no-load othello.dev
   (:require
-    [othello.main :as core]
+    [othello.main :as main]
     [devtools.core :as devtools]))
 
 (extend-protocol IPrintWithWriter
@@ -12,4 +12,4 @@
 
 (devtools/install!)
 
-(core/init!)
+(main/init!)

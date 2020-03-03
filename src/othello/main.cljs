@@ -15,7 +15,7 @@
 (defn handle-square-click
   [state {x :x y :y}]
   (println "clicked square" x y)
-  state)
+  (gc/set-square state x y (gc/get-player-in-turn state)))
 
 (defn handle-restart-click
   [state {}]
