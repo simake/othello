@@ -73,6 +73,14 @@
         index (coordinates-to-vector-index (:width board) (:height board) x y)]
     (assoc-in state [:board :squares index] value)))
 
+(defn set-squares
+  [state coords value]
+  (reduce
+    (fn [state [x y]]
+      (set-square state x y value))
+    state
+    coords))
+
 (defn set-starting-pieces
   "Sets the four middle squares to alternating black/white."
   [state]
