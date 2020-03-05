@@ -47,6 +47,10 @@
   [state]
   (:player-in-turn state))
 
+(defn set-player-in-turn
+  [state player]
+  (assoc state :player-in-turn player))
+
 (defn coordinates-to-vector-index
   "Converts coordinates in the xy-plane to a vector index.
   Returns nil for out-of-bounds indices."
@@ -130,3 +134,15 @@
   ([]
    (-> (create-empty-state 8 8)
        (set-starting-pieces))))
+
+(defn print-board
+  "Prints the board in a human-friendly format. Useful for debugging."
+  [state]
+  (let [height (get-board-height state)
+        width (get-board-width state)]
+    (dotimes [y height]
+      (dotimes [x width]
+        (print (get-square state x (- height y 1)) " "))
+      (println)))
+  (println)
+  state)

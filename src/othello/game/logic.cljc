@@ -7,6 +7,10 @@
 (def get-opponent {w b
                    b w})
 
+(defn change-player-in-turn
+  [state]
+  (gc/set-player-in-turn state (get-opponent (gc/get-player-in-turn state))))
+
 (defn captures-in-direction
   "Returns the captures in a certain direction from playing a piece at this position.
   The direction is determined by dx and dy (deltas)."
@@ -85,19 +89,53 @@
           [dx dy])]
     (reduce
       (fn [acc direction]
-        (concat acc (apply captures-in-direction state player x y direction)))
+        (into [] (concat acc (apply captures-in-direction state player x y direction))))
       [] directions)))
 
-(defn try-move                                              ;TODO
+(defn occupied
+  "Returns the player at the coordinates, nil if it isn't occupied."
+  [state x y]
+  (let [player (gc/get-square state x y)]
+    (if (or (= player w) (= player b))
+      player
+      nil)))
+
+(defn try-move
   "Attempts a move. Returns new state upon success, nil otherwise."
+  {:test (fn []
+           ; places new piece
+           (is= (-> (gc/create-game 4 4)
+                    (try-move w 1 0)
+                    (gc/get-square 1 0))
+                w)
+           ; captures piece
+           (is= (-> (gc/create-game 4 4)
+                    (try-move w 1 0)
+                    (gc/get-square 1 1))
+                w)
+           ; square already occupied
+           (is= (-> (gc/create-game 4 4)
+                    (gc/set-square 1 0 w)
+                    (try-move w 1 0))
+                nil)
+           ; places new piece in top left corner and captures south and south-east
+           (is= (-> (gc/create-game 4 4)
+                    (gc/set-player-in-turn b)
+                    (gc/set-square 0 0 b)
+                    (gc/set-square 3 0 b)
+                    (gc/set-square 0 1 w)
+                    (gc/set-square 0 2 w)
+                    (try-move b 0 3)
+                    (gc/get-squares))
+                [b 0 0 0
+                 b b b 0
+                 b b b 0
+                 b 0 0 b]))}
   [state player x y]
-  )                                                         ; set-squares
-
-(defn valid-move?                                           ;TODO
-  [state player x y]
-  (when-not (= player (gc/get-player-in-turn state))
-    false)
-  true)                                                     ;TODO
-
-(defn valid-moves                                           ;TODO
-  [state player])
+  (let [captures (captures state player x y)]
+    (if (and (= player (gc/get-player-in-turn state))
+             (not (occupied state x y))
+             (not-empty captures))
+      (-> (gc/set-square state x y player)
+          (gc/set-squares captures player))
+      nil)))

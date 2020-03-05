@@ -3,8 +3,8 @@
     [reagent.core :as r]
     [ysera.error :refer [error]]
     [othello.game.core :as gc]
-    [othello.view.components :as vc]
-    [othello.view.events :as ve]))
+    [othello.game.api :as ga]
+    [othello.view.components :as vc]))
 
 ;; State initialization
 
@@ -14,12 +14,12 @@
 
 (defn handle-square-click
   [state {x :x y :y}]
-  (println "clicked square" x y)
-  (gc/set-square state x y (gc/get-player-in-turn state)))
+  (println "event: clicked square" x y)
+  (ga/play state x y))
 
 (defn handle-restart-click
   [state {}]
-  (println "clicked restart")
+  (println "event: clicked restart")
   state)
 
 ;; Event dispatcher

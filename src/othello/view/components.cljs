@@ -1,6 +1,6 @@
 (ns othello.view.components
   (:require
-    [othello.game.core :as gc]))
+    [othello.game.core :as gc :refer [w b]]))
 
 (defn square-view
   [{x             :x
@@ -8,7 +8,8 @@
     value         :value
     trigger-event :trigger-event}]
   [:input {:type    "button"
-           :value   value
+           :value   "  "
+           :style   {:backgroundColor (get {w "white" b "black" 0 "green"} value)}
            :onClick #(trigger-event {:event :square-click
                                      :data  {:x x
                                              :y y}})}])
@@ -58,6 +59,6 @@
     trigger-event  :trigger-event}]
   (let [state @app-state-atom]
     [:div
-     [:h2 "Welcome to Reagent"]
+     [:h2 "Othello"]
      [othello-view {:state         state
                     :trigger-event trigger-event}]]))
