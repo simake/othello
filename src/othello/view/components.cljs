@@ -47,8 +47,13 @@
 (defn othello-view
   [{state         :state
     trigger-event :trigger-event}]
-  (board-view {:state         state
-               :trigger-event trigger-event}))
+  [:div.othello
+   (board-view {:state         state
+                :trigger-event trigger-event})
+   [:input {:type    "button"
+            :value   "Restart"
+            :style   {:backgroundColor "grey"}
+            :onClick #(trigger-event {:event :restart-click})}]])
 
 (defn app-view
   [{app-state-atom :app-state-atom

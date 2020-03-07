@@ -13,3 +13,6 @@
           (gl/change-player-in-turn move))
       (do (println "play: invalid move")
           state))))
+
+(defn restart []
+  (gc/create-game))

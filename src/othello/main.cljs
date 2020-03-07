@@ -20,7 +20,7 @@
 (defn handle-restart-click
   [state {}]
   (println "event: clicked restart")
-  state)
+  (ga/restart))
 
 ;; Event dispatcher
 
