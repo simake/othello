@@ -3,25 +3,25 @@
     [othello.game.core :as gc :refer [w b]]))
 
 (defn square-view
-  [{x             :x
-    y             :y
+  [{i             :i
+    j             :j
     value         :value
     trigger-event :trigger-event}]
   [:input {:type    "button"
            :value   "  "
            :style   {:backgroundColor (get {w "white" b "black" 0 "green"} value)}
            :onClick #(trigger-event {:event :square-click
-                                     :data  {:x x
-                                             :y y}})}])
+                                     :data  {:i i
+                                             :j j}})}])
 
 (defn row-view
-  [{y             :y
+  [{i             :i
     values        :values
     trigger-event :trigger-event}]
   (->> (map-indexed
          (fn [idx value]
-           (square-view {:x             idx
-                         :y             y
+           (square-view {:i             i
+                         :j             idx
                          :value         value
                          :trigger-event trigger-event}))
          values)
@@ -33,20 +33,16 @@
 (defn board-view
   [{state         :state
     trigger-event :trigger-event}]
-  (let [width (gc/get-board-width state)
-        height (gc/get-board-height state)
-        squares (gc/get-squares state)
-        rows (partition width squares)]
-    (->> (map-indexed
-           (fn [idx row-values]
-             (row-view {:y             (- height idx 1)
-                        :values        row-values
-                        :trigger-event trigger-event}))
-           rows)
-         (reduce
-           (fn [div square]
-             (conj div square))
-           [:div.board]))))
+  (->> (map-indexed
+         (fn [idx row-values]
+           (row-view {:i             idx
+                      :values        row-values
+                      :trigger-event trigger-event}))
+         (gc/get-board state))
+       (reduce
+         (fn [div square]
+           (conj div square))
+         [:div.board])))
 
 (defn othello-view
   [{state         :state

@@ -6,8 +6,8 @@
     [othello.game.logic :as gl]))
 
 (defn play
-  [state x y]
-  (let [move (gl/try-move state (gc/get-player-in-turn state) x y)]
+  [state i j]
+  (let [move (gl/try-move state (gc/get-player-in-turn state) i j)]
     (if move
       (do (println "play: valid move")
           (gl/change-player-in-turn move))

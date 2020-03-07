@@ -13,9 +13,9 @@
 ;; Event handlers
 
 (defn handle-square-click
-  [state {x :x y :y}]
-  (println "event: clicked square" x y)
-  (ga/play state x y))
+  [state {i :i j :j}]
+  (println "event: clicked square" i j)
+  (ga/play state i j))
 
 (defn handle-restart-click
   [state {}]
