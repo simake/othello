@@ -17,6 +17,5 @@ Once you connect to the nREPL, run `(cljs)` to switch to the ClojureScript REPL.
 ### Building for production
 
 ```
-lein clean
 lein package
 ```

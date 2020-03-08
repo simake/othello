@@ -10,7 +10,9 @@
 
   :clean-targets ^{:protect false} [:target-path
                                     [:cljsbuild :builds :dev :compiler :output-dir]
-                                    [:cljsbuild :builds :dev :compiler :output-to]]
+                                    [:cljsbuild :builds :dev :compiler :output-to]
+                                    [:cljsbuild :builds :min :compiler :output-dir]
+                                    [:cljsbuild :builds :min :compiler :output-to]]
 
   :resource-paths ["public"]
 
@@ -30,15 +32,15 @@
                                        :pretty-print  true}
                         :figwheel     {:on-jsload "othello.main/mount-root"
                                        :open-urls ["http://localhost:3449/index.html"]}}
-                       :release
+                       :min
                        {:source-paths ["src" "env/prod/cljs"]
                         :compiler     {:output-to     "public/js/app.js"
-                                       :output-dir    "public/js/release"
+                                       :output-dir    "target"
                                        :optimizations :advanced
                                        :infer-externs true
                                        :pretty-print  false}}}}
 
-  :aliases {"package" ["do" "clean" ["cljsbuild" "once" "release"]]}
+  :aliases {"package" ["do" "clean" ["cljsbuild" "once" "min"]]}
 
   :profiles {:dev {:source-paths ["src" "env/dev/clj"]
                    :dependencies [[binaryage/devtools "0.9.11"]
