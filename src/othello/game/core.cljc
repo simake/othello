@@ -40,12 +40,12 @@
 
 (defn set-squares
   "Accepts a vector of coordinates and sets all the corresponding squares to value."
-  [state indices value]
+  [state coords value]
   (reduce
     (fn [state [i j]]
       (set-square state i j value))
     state
-    indices))
+    coords))
 
 (defn create-empty-board
   {:test (fn []
@@ -54,7 +54,7 @@
                  [0 0 0 0]
                  [0 0 0 0]
                  [0 0 0 0]]))}
-  [width height]
+  [height width]
   (when (or (odd? height) (odd? width))
     (error "Board dimensions have to be even numbers."))
   (into [] (repeat height (into [] (repeat width 0)))))
@@ -78,7 +78,7 @@
                                   [0 w b 0]
                                   [0 b w 0]
                                   [0 0 0 0]]})
-           (is= (create-game 6 4)
+           (is= (create-game 4 6)
                 {:player-in-turn w
                  :board          [[0 0 0 0 0 0]
                                   [0 0 w b 0 0]
@@ -99,14 +99,11 @@
                 {:player-in-turn w
                  :board          [[0 w]
                                   [b 0]]}))}
-  ([board-width board-height]
-   (-> {:board          (create-empty-board board-width board-height)
-        :player-in-turn w}
-       (set-starting-pieces)))
-  ([]
-   (-> {:board          (create-empty-board 8 8)
-        :player-in-turn w}
-       (set-starting-pieces)))
   ([board]
    {:board          board
-    :player-in-turn w}))
+    :player-in-turn w})
+  ([board-height board-width]
+   (-> (create-game (create-empty-board board-height board-width))
+       (set-starting-pieces)))
+  ([]
+   (create-game 8 8)))
