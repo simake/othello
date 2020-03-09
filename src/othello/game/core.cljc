@@ -39,7 +39,7 @@
   (assoc-in state [:board i j] value))
 
 (defn set-squares
-  "Accepts a vector of matrix index pairs and sets all the corresponding squares to value."
+  "Accepts a vector of coordinates and sets all the corresponding squares to value."
   [state indices value]
   (reduce
     (fn [state [i j]]

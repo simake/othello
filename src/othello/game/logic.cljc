@@ -96,6 +96,45 @@
       player
       nil)))
 
+(defn valid-move
+  "Returns the captures if the move is valid, nil otherwise."
+  {:test (fn []
+           (is= (-> (gc/create-game [[w b 0 b w]])
+                    (valid-move w 0 2)
+                    (sort))
+                [[0 1] [0 3]])
+           ; square already occupied
+           (is= (-> (gc/create-game [[w b b b w]])
+                    (valid-move w 0 2))
+                nil))}
+  [state player i j]
+  (let [captures (captures state player i j)]
+    (if (and (= player (gc/get-player-in-turn state))
+             (not (occupied state i j))
+             (not-empty captures))
+      captures
+      nil)))
+
+(defn valid-moves
+  "Returns a vector of coordinates corresponding to valid moves, nil if there are none."
+  {:test (fn []
+           (is= (-> (gc/create-game [[0 0 0 0]
+                                     [b b 0 0]
+                                     [w b 0 0]
+                                     [0 w 0 0]])
+                    (valid-moves w)
+                    (sort))
+                [[0 0] [0 1] [0 2] [2 2]])
+           (is= (-> (gc/create-game [[0 0 0 0]])
+                    (valid-moves w))
+                nil))}
+  [state player]
+  (-> (for [i (range (gc/get-board-height state))
+            j (range (gc/get-board-width state))
+            :when (valid-move state player i j)]
+        [i j])
+      (not-empty)))
+
 (defn try-move
   "Attempts a move. Returns new state upon success, nil otherwise."
   {:test (fn []
@@ -139,10 +178,13 @@
                  [w w w b]
                  [0 0 0 0]]))}
   [state player i j]
-  (let [captures (captures state player i j)]
-    (if (and (= player (gc/get-player-in-turn state))
-             (not (occupied state i j))
-             (not-empty captures))
+  (let [captures (valid-move state player i j)]
+    (if captures
       (-> (gc/set-square state i j player)
           (gc/set-squares captures player))
       nil)))
+
+(defn winner
+  "Returns the winner if there is one, otherwise nil."
+  [state]
+  )
