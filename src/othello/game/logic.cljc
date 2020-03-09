@@ -184,7 +184,45 @@
           (gc/set-squares captures player))
       nil)))
 
+(defn count-pieces
+  "Returns the number of pieces on the board belonging to the specified player."
+  {:test (fn []
+           (is= (-> (gc/create-game [[0 0 0 b]
+                                     [0 w b b]
+                                     [w w w b]
+                                     [0 0 0 0]])
+                    (count-pieces b))
+                4)
+           (is= (-> (gc/create-game [[b 0 b 0]
+                                     [0 b 0 b]])
+                    (count-pieces w))
+                0))}
+  [state player]
+  (-> (filter
+        (partial = player)
+        (flatten (gc/get-board state)))
+      (count)))
+
 (defn winner
   "Returns the winner if there is one, otherwise nil."
+  {:test (fn []
+           (is= (-> (gc/create-game [[w w w w]
+                                     [w w b 0]
+                                     [w w b 0]
+                                     [b b b 0]])
+                    (gc/set-player-in-turn b)
+                    (winner))
+                w)
+           (is= (-> (gc/create-game [[0 w w w]
+                                     [w w b 0]
+                                     [w w b 0]
+                                     [b b b 0]])
+                    (gc/set-player-in-turn b)
+                    (winner))
+                nil))}
   [state]
-  )
+  (if (valid-moves state (gc/get-player-in-turn state))
+    nil
+    (if (> (count-pieces state w)
+           (count-pieces state b))
+      w b)))
