@@ -204,7 +204,7 @@
       (count)))
 
 (defn winner
-  "Returns the winner if there is one, otherwise nil."
+  "Returns the winner if there is one, false for a draw, otherwise nil."
   {:test (fn []
            (is= (-> (gc/create-game [[w w w w]
                                      [w w b 0]
@@ -219,10 +219,19 @@
                                      [b b b 0]])
                     (gc/set-player-in-turn b)
                     (winner))
-                nil))}
+                nil)
+           (is= (-> (gc/create-game [[w w w w]
+                                     [w w w w]
+                                     [b b b b]
+                                     [b b b b]])
+                    (winner))
+                false))}
   [state]
   (if (valid-moves state (gc/get-player-in-turn state))
     nil
-    (if (> (count-pieces state w)
-           (count-pieces state b))
-      w b)))
+    (let [w-count (count-pieces state w)
+          b-count (count-pieces state b)]
+      (cond
+        (> w-count b-count) w
+        (> b-count w-count) b
+        :else false))))

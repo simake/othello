@@ -1,6 +1,7 @@
 (ns othello.view.components
   (:require
-    [othello.game.core :as gc :refer [w b]]))
+    [othello.game.core :as gc :refer [w b]]
+    [othello.game.logic :as gl]))
 
 (defn square-view
   [{i             :i
@@ -48,6 +49,11 @@
   [{state         :state
     trigger-event :trigger-event}]
   [:div.othello
+   [:h3 (condp = (gl/winner state)
+          w "Winner: White"
+          b "Winner: Black"
+          false "Draw"
+          nil)]
    (board-view {:state         state
                 :trigger-event trigger-event})
    [:input {:type    "button"
@@ -60,6 +66,5 @@
     trigger-event  :trigger-event}]
   (let [state @app-state-atom]
     [:div
-     [:h2 "Othello"]
      [othello-view {:state         state
                     :trigger-event trigger-event}]]))
