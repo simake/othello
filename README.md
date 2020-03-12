@@ -1,5 +1,9 @@
+### Project overview
+
+An Othello game implemented in ClojureScript and run in the browser. Try it out [here](https://simake.github.io/othello/).
 
 ### Development mode
+
 To start the Figwheel compiler, navigate to the project folder and run the following command in the terminal:
 
 ```
@@ -18,4 +22,10 @@ Once you connect to the nREPL, run `(cljs)` to switch to the ClojureScript REPL.
 
 ```
 lein package
+```
+
+### Deploy to GitHub Pages
+
+```
+./deploy.sh
 ```
