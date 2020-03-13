@@ -1,6 +1,6 @@
 (ns othello.view.components
   (:require
-    [othello.game.core :as gc :refer [w b]]
+    [othello.game.state :as gs :refer [w b]]
     [othello.game.logic :as gl]))
 
 (defn piece-view
@@ -65,7 +65,7 @@
            (row-view {:i             idx
                       :values        row-values
                       :trigger-event trigger-event}))
-         (gc/get-board state))
+         (gs/get-board state))
        (reduce
          (fn [div square]
            (conj div square))

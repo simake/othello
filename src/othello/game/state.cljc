@@ -1,4 +1,4 @@
-(ns othello.game.core
+(ns othello.game.state
   (:require
     [ysera.test :refer [is= is is-not error?]]
     [ysera.error :refer [error]]))

@@ -2,13 +2,13 @@
   (:require
     [reagent.core :as r]
     [ysera.error :refer [error]]
-    [othello.game.core :as gc]
+    [othello.game.state :as gs]
     [othello.game.api :as ga]
     [othello.view.components :as vc]))
 
 ;; State initialization
 
-(defonce app-state-atom (r/atom (gc/create-game)))
+(defonce app-state-atom (r/atom (gs/create-game)))
 
 ;; Event handlers
 
