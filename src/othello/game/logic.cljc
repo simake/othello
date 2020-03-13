@@ -176,12 +176,18 @@
                 [[0 0 0 b]
                  [0 w b b]
                  [w w w b]
-                 [0 0 0 0]]))}
+                 [0 0 0 0]])
+           ; changes player in turn
+           (is= (-> (gc/create-game 4 4)
+                    (try-move w 3 1)
+                    (gc/get-player-in-turn))
+                b))}
   [state player i j]
   (let [captures (valid-move state player i j)]
     (if captures
       (-> (gc/set-square state i j player)
-          (gc/set-squares captures player))
+          (gc/set-squares captures player)
+          (change-player-in-turn))
       nil)))
 
 (defn count-pieces

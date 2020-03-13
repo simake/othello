@@ -10,7 +10,7 @@
   (let [move (gl/try-move state (gc/get-player-in-turn state) i j)]
     (if move
       (do (println "play: valid move")
-          (gl/change-player-in-turn move))
+          move)
       (do (println "play: invalid move")
           state))))
 
