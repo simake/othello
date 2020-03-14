@@ -30,6 +30,14 @@
   [state player]
   (assoc state :player-in-turn player))
 
+(defn get-ai-difficulty
+  [state]
+  (:ai-difficulty state))
+
+(defn set-ai-difficulty
+  [state difficulty]
+  (assoc state :ai-difficulty difficulty))
+
 (defn get-square
   [state i j]
   (get (get (get-board state) i) j))
@@ -74,18 +82,21 @@
   {:test (fn []
            (is= (create-game 4 4)
                 {:player-in-turn w
+                 :ai-difficulty  2
                  :board          [[0 0 0 0]
                                   [0 w b 0]
                                   [0 b w 0]
                                   [0 0 0 0]]})
            (is= (create-game 4 6)
                 {:player-in-turn w
+                 :ai-difficulty  2
                  :board          [[0 0 0 0 0 0]
                                   [0 0 w b 0 0]
                                   [0 0 b w 0 0]
                                   [0 0 0 0 0 0]]})
            (is= (create-game)
                 {:player-in-turn w
+                 :ai-difficulty  2
                  :board          [[0 0 0 0 0 0 0 0]
                                   [0 0 0 0 0 0 0 0]
                                   [0 0 0 0 0 0 0 0]
@@ -97,11 +108,13 @@
            (is= (create-game [[0 w]
                               [b 0]])
                 {:player-in-turn w
+                 :ai-difficulty  2
                  :board          [[0 w]
                                   [b 0]]}))}
   ([board]
    {:board          board
-    :player-in-turn w})
+    :player-in-turn w
+    :ai-difficulty  2})
   ([board-height board-width]
    (-> (create-game (create-empty-board board-height board-width))
        (set-starting-pieces)))

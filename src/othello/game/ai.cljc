@@ -1,4 +1,4 @@
-(ns othello.ai.minimax
+(ns othello.game.ai
   (:require
     [ysera.test :refer [is= is is-not]]
     [othello.game.state :as gs :refer [w b]]
@@ -68,3 +68,10 @@
                            max)))
                      {:value -9999999 :action nil}))))]
     (negamax state depth (gs/get-player-in-turn state))))
+
+(defn ai-play
+  [state]
+  (->> (gs/get-ai-difficulty state)
+       (minimax state)
+       (:action)
+       (apply gl/try-move state (gs/get-player-in-turn state))))

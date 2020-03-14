@@ -4,6 +4,6 @@
             [othello.game.state]
             [othello.game.logic]
             [othello.game.api]
-            [othello.ai.minimax]))
+            [othello.game.ai]))
 
 (deftest test-all (is (successful? (time (run-all-tests #"othello\.(?!all).*")))))
