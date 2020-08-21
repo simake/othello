@@ -17,9 +17,7 @@
                                                "rgb(30,30,0,1), rgb(0,0,0,0.1)")
                                              ")")
                        :position        "relative"
-                       :right           1
-                       :bottom          1
-                       :padding-top     "80%"}}])
+                       :top             "3%"}}])
 
 (defn square-view
   [{i             :i
